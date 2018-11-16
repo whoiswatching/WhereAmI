@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>						
+function ipLookUp () {
+  $.ajax('http://ip-api.com/json')
+  .then(
+      function success(response) {
+          console.log('User\'s Location Data is ', response);
+          console.log('User\'s Country', response.country);
+
+document.forms['Search'].elements['country'].value = response.country;
+document.forms['Search'].elements['isp'].value = response.isp;	
+document.forms['Search'].elements['ipAddress'].value = response.query;	
+
+})
+ function fail(data, status) {
+          console.log('Request failed.  Returned status of',
+                      status);
+      
+	  
+	  }
+	  
+}; 
+window.onload = ipLookUp;	  
+</script>
+
+<html lang="en">
+<head>
+  <!-- Theme Made By www.w3schools.com - No Copyright -->
+  <title>Assaccess</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+  .jumbotron {
+      background-color: #162B4C;
+      color: #fff;
+      padding: 100px 25px;
+  }
+  .bg-grey {
+      background-color: #f6f6f6;
+  }
+  .container-fluid {
+      padding: 60px 50px;
+  }
+  </style>
+</head>
+<body>
+
+
+<div class="jumbotron bg-1 text-center">
+  <h1>Watchlist</h1>
+  <h3>Check if you are on a Goverment watchlist</h3>
+</div>
+
+<div class="container-fluid bg-2 text-center">
+  <h3>Check Database</h3>
+  <p>Enter Name and postcode to check if on watchlist </p>
+<form name="Search" class="form-inline" action="/action_page.php">
+    <div class="form-group">
+      <label class="sr-only" for="firstname">Firstname:</label>
+      <input type="text" class="form-control" id="firstname" placeholder="Enter Firstname"  name="firstname">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="lastname">Lastname:</label>
+      <input type="text" class="form-control" id="firstname" placeholder="Enter Lastname" name="lastname">
+    </div>
+   <div class="form-group">
+      <label class="sr-only" for="postcode">Postcode:</label>
+      <input type="text" class="form-control" id="postcode" placeholder="Enter Postcode" name="postcode">
+    </div>
+	<div class="form-group">
+      <label class="sr-only" for="country">Country:</label>
+      <input type="hidden" class="form-control" id="country"  name="country">
+    </div>
+	<div class="form-group">
+      <label class="sr-only" for="ISP">ISP:</label>
+      <input type="hidden" class="form-control" id="isp" name="isp">
+    </div>
+	<div class="form-group">
+      <label class="sr-only" for="ipAddress">IPaddress:</label>
+      <input type="hidden" class="form-control" id="ipAddress" name="ipAddress">
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+  
+  </div>
+
+<div class="container-fluid bg-3 text-center bg-grey">
+  <h3>Table of users</h3>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+
+</body>
+</html>
+  
+
