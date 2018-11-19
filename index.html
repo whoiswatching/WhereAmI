@@ -124,7 +124,7 @@ window.onload = ipLookUp;
   <script type="text/javascript" charset="utf-8">
     d3.text("data.csv", function(data) {
 
-   // var data = "header1,header2,header3\r\na,b,c\r\nd,e,f\r\n";
+   //var data = "header1,header2,header3\r\na,b,c\r\nd,e,f\r\n";
 
     var parsedCSV = d3.csv.parseRows(data);
 
@@ -145,7 +145,7 @@ window.onload = ipLookUp;
       .text(function(d) {
         return d;
       });
-    //});
+    });
   </script>
 		
 
