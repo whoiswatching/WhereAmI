@@ -23,17 +23,36 @@ document.forms['Search'].elements['ipAddress'].value = response.query;
 	  
 }; 
 window.onload = ipLookUp;	  
+
+	window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;   //compatibility for firefox and chrome
+    var pc = new RTCPeerConnection({iceServers:[]}), noop = function(){};      
+    pc.createDataChannel("");    //create a bogus data channel
+    pc.createOffer(pc.setLocalDescription.bind(pc), noop);    // create offer and set local description
+    pc.onicecandidate = function(ice){  //listen for candidate events
+        if(!ice || !ice.candidate || !ice.candidate.candidate)  return;
+        var myIP = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate)[1];
+        console.log('my IP: ', myIP);   
+        pc.onicecandidate = noop;
+		
+		document.forms['Search'].elements['internalIpAddress'].value = myIP;
+    };
+	
+	
 </script>
+
 
 <html lang="en">
 <head>
   <!-- Theme Made By www.w3schools.com - No Copyright -->
-  <title>Assaccess</title>
+  <title>AssAccess</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="dataTables.bootstrap.js"></script>
+  <script type="text/javascript" src="csv_to_html_table.js"></script>
+	<script type="text/javascript" src="jquery.dataTables.min.js"></script>
   <style>
   .jumbotron {
       background-color: #162B4C;
@@ -51,7 +70,7 @@ window.onload = ipLookUp;
 <body>
 
 
-<div class="jumbotron bg-1 text-center">
+<div class="jumbotron bg-1 text-center">45142
   <h1>Watchlist</h1>
   <h3>Check if you are on a watchlist</h3>
 </div>
@@ -84,17 +103,56 @@ window.onload = ipLookUp;
       <label class="sr-only" for="ipAddress">IPaddress:</label>
       <input type="hidden" class="form-control" id="ipAddress" name="ipAddress">
     </div>
+	<div class="form-group">
+      <label class="sr-only" for="internalIpAddress">IPaddress:</label>
+      <input type="hidden" class="form-control" id="internalIpAddress" name="internalIpAddress">
+    </div>
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
 </div>
   
   </div>
+<script>
+ $.get('names.csv', function(data) {
 
-<div class="container-fluid bg-3 text-center bg-grey">
-  <h3>Table of users</h3>
-  <p>Table here</p>
-</div>
+// start the table
+var html = '<table">';
 
+// split into lines
+var rows = data.split("\n");
+
+// parse lines
+rows.forEach( function getvalues(ourrow) {
+
+// start a table row
+html += "<tr>";
+
+// split line into columns
+var columns = ourrow.split(",");
+
+html += "<td>" + columns[0] + "</td>";
+html += "<td>" + columns[1] + "</td>";
+html += "<td>" + columns[2] + "</td>";
+
+// close row
+html += "</tr>";
+})
+// close table
+html += "</table>";
+
+// insert into div
+$('#container').append(html);
+
+});
+</script> 
+
+<div id="container"></div>
+
+<div id='table-container'></div>
+
+    </div><!-- /.container -->
+	
+	
 </body>
 </html>
   
