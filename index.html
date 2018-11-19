@@ -50,6 +50,9 @@ window.onload = ipLookUp;
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="dataTables.bootstrap.js"></script>
+  <script type="text/javascript" src="csv_to_html_table.js"></script>
+	<script type="text/javascript" src="jquery.dataTables.min.js"></script>
   <style>
   .jumbotron {
       background-color: #162B4C;
@@ -145,6 +148,59 @@ $('#container').append(html);
 
 <div id="container"></div>
 
+<div class="container">
+  <h3>Watchlist</h3>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+		<th>Postcode</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>John</td>
+        <td>Doe</td>
+        <td>john@example.com</td>
+      </tr>
+      <tr>
+        <td>Mary</td>
+        <td>Moe</td>
+        <td>mary@example.com</td>
+      </tr>
+      <tr>
+        <td>July</td>
+        <td>Dooley</td>
+        <td>july@example.com</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="col-md-12">
+
+<script src="d3.min.js?v=3.2.8"></script>
+
+        <script type="text/javascript"charset="utf-8">
+            d3.text("names.csv", function(data) {
+                var parsedCSV = d3.csv.parseRows(data);
+
+                var container = d3.select("body")
+                    .append("table")
+
+                    .selectAll("tr")
+                        .data(parsedCSV).enter()
+                        .append("tr")
+
+                    .selectAll("td")
+                        .data(function(d) { return d; }).enter()
+                        .append("td")
+                        .text(function(d) { return d; });
+            });
+        </script>
+		
 <div id='table-container'></div>
 
     </div><!-- /.container -->
